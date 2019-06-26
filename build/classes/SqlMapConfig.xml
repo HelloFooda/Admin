@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+
+<configuration>
+	<!-- 引用db.properties配置文件 -->
+	<properties resource="db.properties"/>
+	<environments default="environment">
+		<environment id="environment">
+			<!-- JDBC类型：有提交和回滚的设置 -->
+			<transactionManager type="JDBC" />
+			<!-- POOLED类型：数据库连接池 -->
+			<!-- 配置数据库连接信息 -->
+			<dataSource type="POOLED">
+				<!-- value的值引用db.properties中的值 -->
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}"/>
+				<property name="username" value="${user}" />
+				<property name="password" value="${pwd}" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 配置映射文件 -->
+<mappers>
+		<mapper resource="design/hellofood/admin/sql/AdminsSqlMap.xml"/>
+</mappers>
+</configuration> 

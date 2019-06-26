@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="design.hellofood.admin.dao.AdminDao">
+
+<cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+<!-- 添加管理员 -->
+<insert id="save" parameterType="design.hellofood.admin.entity.AdminUser" useGeneratedKeys="true" keyProperty="Aid">
+	insert into admin(Aid,Aname,Apassword,Aemal,Zname,Changetime,Creationtime,Cid,phone,sex)
+	values(#{Aid},#{Aname},#{Apassword},#{Aemal},#{Zname},#{Changetime},#{Creationtime},#{Cid},#{phone},#{sex})
+</insert>
+<!-- 根据Aid删除管理员 -->
+<delete id="deleteById" parameterType="int">
+		delete from admin where Aid=#{Aid}
+</delete>
+<!-- 查询所有管理员信息 -->
+<select id="findAll" resultType="design.hellofood.admin.entity.AdminUser">
+	select * from admin limit #{begin},#{pageSize}
+</select>
+<!-- 根据ID查询 -->
+<select id="findById" parameterType="int" resultType="design.hellofood.admin.entity.AdminUser">
+	select * from admin where Aid=#{Aid}
+</select>
+<!-- 根据管理员名称查找管理员信息 -->
+<select id="findByName" resultType="design.hellofood.admin.entity.AdminUser">
+	select * from admin where Aname=#{Aname}
+</select>
+<!-- 根据Aid修改管理员信息 -->
+<update id="updateById" parameterType="design.hellofood.admin.entity.AdminUser">
+	update admin
+	<set>
+		<if test="Aname!=null">
+			Aname=#{Aname},
+		</if>
+		<if test="Apassword!=null">
+			Apassword=#{Apassword},
+		</if>
+		<if test="Aemal!=null">
+			Aemal=#{Aemal},
+		</if>
+		<if test="Zname!=null">
+			Zname=#{Zname},
+		</if>
+		<if test="phone!=null">
+			phone=#{phone},
+		</if>
+		<if test="sex!=null">
+			sex=#{sex},
+		</if>
+	</set>
+	where Aid=#{Aid}
+</update>
+
+<!-- 关联查询 -->
+<select id="findUnionById" parameterType="int" resultMap="AdminUserMap">
+	SELECT * FROM 
+	admin INNER JOIN `character` 
+	ON `character`.Cid = admin.Cid
+	WHERE
+	admin.Aid=#{Aid}
+</select>
+<resultMap type="design.hellofood.admin.entity.AdminUser" id="AdminUserMap">
+	<id property="Aid" column="Aid"/>
+	<result property="Aname" column="Aname"/>
+	<result property="Apassword" column="Apassword"/>
+	<result property="Aemal" column="Aemal"/>
+	<result property="Zname" column="Zname"/>
+	<result property="Changetime" column="Changetime"/>
+	<result property="Creationtime" column="Creationtime"/>
+	<result property="Cid" column="Cid"/>
+	<result property="phone" column="phone"/>
+	<result property="sex" column="sex"/>
+	
+	<association property="briefAdmin" javaType="design.hellofood.admin.entity.brief.BriefAdmin">
+			<id property="Cid" column="Cid"/>
+			<result property="Cname" column="Cname"/>
+			<result property="Cdescription" column="Cdescription"/>
+			<result property="Changetime" column="Changetime"/>
+			<result property="Creationtime" column="Creationtime"/>
+	</association>
+</resultMap>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
